@@ -2,16 +2,12 @@
 
 **ClusterCompress** applies K-Means clustering to reduce the number of distinct colors in an image, making it more compressible using appropriate encoding schemes. The K-Means algorithm is implemented from scratch using NumPy, and the entire project is containerized with Docker for ease of use.
 
----
-
 ## Features
 
 - K-Means clustering implemented from scratch (no external ML libraries).
 - Supports 512 x 512 x 3 images.
 - Customizable number of clusters (`K`).
 - Dockerized for simple build and execution.
-
----
 
 ## How It Works
 
@@ -28,8 +24,6 @@
 8. Replace each pixel in the image with its corresponding cluster center.
 9. Compute and display **Mean Squared Error (MSE)** between original and clustered image.
 
----
-
 ## Project Structure
 
 <pre>
@@ -45,8 +39,6 @@ ClusterCompress/
 └── image/
     └── input_image.jpg     # Sample input image (user-supplied)
 </pre>
-
----
 
 ## Installation & Execution
 
