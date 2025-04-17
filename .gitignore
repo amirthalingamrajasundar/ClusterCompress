@@ -1,0 +1,42 @@
+# Python bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+notebooks/
+
+# Data (avoid committing raw data files)
+data/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Build/output folders
+build/
+dist/
+*.egg-info/
+
+# Version control
+.git/
+
+# Environment variable files
+.env
+.env.*
+
+# User-specific files (e.g., OS-generated)
+.DS_Store
+Thumbs.db

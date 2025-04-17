@@ -1,0 +1,35 @@
+# Python bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE/editor configs
+.vscode/
+.idea/
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+notebooks/
+
+# Data (exclude raw or intermediate data not needed in container)
+data/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Build/output folders
+build/
+dist/
+*.egg-info/
+
+# Version control
+.git/
+
+# Environment files
+.env
+.env.*
