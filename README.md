@@ -95,8 +95,8 @@ Below are the Mean Squared Error (MSE) values for different values of **K** (num
 
 As **K** increases, the image quality improves (lower MSE), but file size may also increase depending on encoding.
 
-| Original Image | Clustered (K=2) | Clustered (K=10) |
+| Original Image | Clustered (K=2) | Clustered (K=5) |
 |----------------|------------------|------------------|
-| ![](image/input_image.jpg) | ![](image/image_clustered_2.jpg) | ![](image/image_clustered_10.jpg) |
+| ![](image/input_image.jpg) | ![](image/image_clustered_2.jpg) | ![](image/image_clustered_5.jpg) |
 
 ![MSE vs K](plots/mse_vs_k.png)
