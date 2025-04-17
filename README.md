@@ -97,6 +97,6 @@ As **K** increases, the image quality improves (lower MSE), but file size may al
 
 | Original Image | Clustered (K=2) | Clustered (K=10) |
 |----------------|------------------|------------------|
-| ![](image/input_image.jpg) | ![](image/clustered_2.jpg) | ![](image/clustered_10.jpg) |
+| ![](image/input_image.jpg) | ![](image/image_clustered_2.jpg) | ![](image/image_clustered_10.jpg) |
 
 ![MSE vs K](plots/mse_vs_k.png)
