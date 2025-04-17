@@ -1,78 +1,102 @@
-# ClusterCompress
+# ClusterCompress: K-Means Image Clustering
 
-ClusterCompress is a simple image compression tool using K-Means clustering. It reduces the number of unique colors in an image, compressing it while preserving visual quality.
+**ClusterCompress** applies K-Means clustering to reduce the number of distinct colors in an image, making it more compressible using appropriate encoding schemes. The K-Means algorithm is implemented from scratch using NumPy, and the entire project is containerized with Docker for ease of use.
+
+---
 
 ## Features
-- Implements K-Means from scratch using NumPy
-- Compresses images by reducing color space
-- Supports command-line input for number of clusters
-- Dockerized for portability and easy setup
 
-## Example
-Original image → ClusterCompress with k=16 → Output image with reduced colors.
+- K-Means clustering implemented from scratch (no external ML libraries).
+- Supports 512 x 512 x 3 images.
+- Customizable number of clusters (`K`).
+- Dockerized for simple build and execution.
+
+---
+
+## How It Works
+
+1. Load and normalize the input image (scale pixel values to \[0, 1\]).
+2. Reshape the image into a 2D array of RGB pixels.
+3. Select the first cluster center randomly.
+4. Initialize remaining cluster centers using **k-means++**:
+   - Compute distances of all pixels from existing centers.
+   - Normalize squared distances.
+   - Use normalized values as probabilities for next center selection.
+5. Assign each pixel to its nearest cluster center.
+6. Update each cluster center to the mean of its assigned pixels.
+7. Repeat steps 5–6 until convergence or max iterations reached.
+8. Replace each pixel in the image with its corresponding cluster center.
+9. Compute and display **Mean Squared Error (MSE)** between original and clustered image.
+
+---
 
 ## Project Structure
-ClusterCompress/
-├── Dockerfile
-├── requirements.txt
-├── .dockerignore
-├── .gitignore
-├── main.py
-├── model.py
-├── utils.py
-├── image/
-│   └── input_image.jpg
-└── README.md
 
-## Installation
+<pre>
+ClusterCompress/
+├── Dockerfile              # Docker configuration for containerized execution
+├── requirements.txt        # Python dependencies (NumPy, PIL, etc.)
+├── .dockerignore           # Files/folders to exclude from Docker builds
+├── .gitignore              # Files/folders to exclude from Git commits
+├── main.py                 # Main entry point: handles image clustering
+├── model.py                # K-Means clustering logic
+├── utils.py                # Utilities for image I/O and evaluation
+├── README.md               # Project documentation
+└── image/
+    └── input_image.jpg     # Sample input image (user-supplied)
+</pre>
+
+---
+
+## Installation & Execution
 
 ### Run with Docker
 
-You can build and run the project entirely in Docker without needing to install dependencies manually.
+**Build the image:**
 
-### Build the Docker Image
-From the root directory of the project, run:
 ```bash
-    docker build -t clustercompress .
+docker build -t clustercompress .
 ```
 
-### Run the Container
-Mount the image directory (to access input/output) and pass the desired number of clusters:
+**Run the image:**
 ```bash
-    docker run -it --rm -v $(pwd):/app clustercompress /bin/bash
+docker run -it --rm -v $(pwd):/app clustercompress /bin/bash
 ```
 
-### Run the python script
-Once you are in the container's shell, execute the following command.
+**Run the script inside the container:**
 ```bash
-    python main.py 
+python main.py --image ./image/input_image.jpg --num_clusters 2
 ```
 
-## Input/Output
-- Input image should be at: image/input_image.jpg
-- Output will be saved as: image_clustered_32.jpg
+## Notes:
+1. The input image must be saved as image/input_image.jpg.
+2. The output image will be saved as image/clustered_<k>.jpg.
 
-## Arguments
---num_clusters (int): Number of color clusters (e.g., 16, 32, 64)  
---image (file path): Image file path (e.g., 'image/input_image.jpg')
+## Command-Line Arguments
 
-## How It Works
-1. Loads and normalizes the image
-2. Reshapes the image into a list of RGB pixels
-3. Applies K-Means to group colors into clusters
-4. Reconstructs the image using cluster centers
-5. Saves the compressed image
+The script accepts the following arguments:
 
-## Example Results
-| k   | Description                          |
-|-----|--------------------------------------|
-| 8   | High compression, lower quality      |
-| 32  | Good balance                        |
-| 64  | Near-original quality               |
+| Argument           | Type | Required | Default                    | Description                                      |
+|--------------------|------|----------|----------------------------|--------------------------------------------------|
+| `--image`          | str  | No       | `image/input_image.jpg`    | Path to the input image                          |
+| `--num_clusters`   | int  | Yes      | —                          | Number of color clusters (e.g., 2, 5, 10, etc.)  |
 
-## Testing & Debugging
-To visualize results:
-```python
-    from utils import show_image
-    show_image(image_clustered)
-```
+## Results
+
+Below are the Mean Squared Error (MSE) values for different values of **K** (number of clusters):
+
+| Number of Clusters (K) | MSE                         |
+|------------------------|-----------------------------|
+| 2                      | 0.0321                      |
+| 5                      | 0.0096                      |
+| 10                     | 0.0049                      |
+| 20                     | 0.0027                      |
+| 50                     | 0.0013                      |
+
+As **K** increases, the image quality improves (lower MSE), but file size may also increase depending on encoding.
+
+| Original Image | Clustered (K=2) | Clustered (K=10) |
+|----------------|------------------|------------------|
+| ![](image/input_image.jpg) | ![](image/clustered_2.jpg) | ![](image/clustered_10.jpg) |
+
+![MSE vs K](plots/mse_vs_k.png)
